@@ -25,7 +25,7 @@ usuarios.create({
 })
 usuarios.create({
     foto: "foto2.png",
-    email: "osvaldojosuecruz@gmail.com2",
-    password: "pass1233"
+    email: "osvaldo@gmail.com",
+    password: "123pass"
 })
 console.log(usuarios.read());
