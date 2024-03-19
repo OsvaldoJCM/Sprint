@@ -1,0 +1,122 @@
+[
+  {
+    "id": "4ae5bab72adacda21615f572",
+    "title": "Zapatilla",
+    "photo": "zapatilla.png",
+    "category": "calzado",
+    "price": 35000,
+    "stock": 100
+  },
+  {
+    "id": "b8db952008282cb22548de28",
+    "title": "Poleron",
+    "photo": "poleron.png",
+    "category": "ropa",
+    "price": 15000,
+    "stock": 80
+  },
+  {
+    "id": "6440e2cd25b9ed682d63c66f",
+    "title": "Lentes",
+    "photo": "lentes.png",
+    "category": "accesorios",
+    "price": 5000,
+    "stock": 20
+  },
+  {
+    "id": "3c80bf580eb753b5892f9fca",
+    "title": "Botin",
+    "photo": "botin.png",
+    "category": "calzado",
+    "price": 40000,
+    "stock": 50
+  },
+  {
+    "id": "75ac10e78022b7a42a24af2a",
+    "title": "Camisa",
+    "photo": "camisa.png",
+    "category": "ropa",
+    "price": 8000,
+    "stock": 30
+  },
+  {
+    "id": "a80b8b9a5ec2fd8f1b48848b",
+    "title": "Zapatilla",
+    "photo": "zapatilla.png",
+    "category": "calzado",
+    "price": 35000,
+    "stock": 100
+  },
+  {
+    "id": "74df200e351e2518807d40f8",
+    "title": "Poleron",
+    "photo": "poleron.png",
+    "category": "ropa",
+    "price": 15000,
+    "stock": 80
+  },
+  {
+    "id": "a1e7df5fab9dd2ac042bb7ca",
+    "title": "Lentes",
+    "photo": "lentes.png",
+    "category": "accesorios",
+    "price": 5000,
+    "stock": 20
+  },
+  {
+    "id": "0d7a2959d7e55d3c7001d581",
+    "title": "Botin",
+    "photo": "botin.png",
+    "category": "calzado",
+    "price": 40000,
+    "stock": 50
+  },
+  {
+    "id": "92e91f6a071b171692a0cd15",
+    "title": "Camisa",
+    "photo": "camisa.png",
+    "category": "ropa",
+    "price": 8000,
+    "stock": 30
+  },
+  {
+    "id": "29f8bf76fc9bea282eee1aac",
+    "title": "Zapatilla",
+    "photo": "zapatilla.png",
+    "category": "calzado",
+    "price": 35000,
+    "stock": 100
+  },
+  {
+    "id": "e55ab2c60f3daf469c65ccc8",
+    "title": "Poleron",
+    "photo": "poleron.png",
+    "category": "ropa",
+    "price": 15000,
+    "stock": 80
+  },
+  {
+    "id": "b71bf7af469f69e696be684d",
+    "title": "Lentes",
+    "photo": "lentes.png",
+    "category": "accesorios",
+    "price": 5000,
+    "stock": 20
+  },
+  {
+    "id": "b1fa14a37a677be0e1bbd3fb",
+    "title": "Botin",
+    "photo": "botin.png",
+    "category": "calzado",
+    "price": 40000,
+    "stock": 50
+  },
+  {
+    "id": "b2655358786be1620d296377",
+    "title": "Camisa",
+    "photo": "camisa.png",
+    "category": "ropa",
+    "price": 8000,
+    "stock": 30
+  }
+]
