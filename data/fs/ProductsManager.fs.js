@@ -1,3 +1,4 @@
+
 import fs from "fs";
 import crypto from "crypto";
 class ProductsManager {
@@ -78,9 +79,7 @@ class ProductsManager {
                 throw error;
             }
         } catch (error) {
-            //el throw de la linea 72 hace saltar este catch
             throw error;
-            //el throw de la linea 76 hace saltar el catch de la ruta
         }
     }
 
@@ -98,6 +97,7 @@ class ProductsManager {
                 const error = new Error("not found!");
                 error.statusCode = 404;
                 throw error;
+
             }
         } catch (error) {
             console.log(error);

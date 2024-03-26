@@ -1,3 +1,4 @@
+
 import fs from "fs";
 import crypto from "crypto";
 class UsersManager {
@@ -48,6 +49,7 @@ class UsersManager {
 
         } catch (error) {
             throw error;
+
         }
     }
 
@@ -56,6 +58,7 @@ class UsersManager {
             let all = await fs.promises.readFile(this.path, "utf-8");
             all = JSON.parse(all);
             let user = all.find((each) => each.id === id);
+
             return user;
 
         } catch (error) {
