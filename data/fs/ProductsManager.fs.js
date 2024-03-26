@@ -1,6 +1,6 @@
-const fs = require("fs");
-const crypto = require("crypto");
 
+import fs from "fs";
+import crypto from "crypto";
 class ProductsManager {
     constructor() {
         this.path = "./data/fs/files/products.json";
@@ -41,18 +41,14 @@ class ProductsManager {
             console.log(error);
         }
     }
-    async read() {
+    async read(cat) {
         try {
             let all = await fs.promises.readFile(this.path, "utf-8");
             all = JSON.parse(all);
-            if (all.length === 0) {
-                throw new Error("No hay productos");
-            } else {
-                console.log(all);
-                return all;
-            }
+            cat && (all = all.filter(each => each.category === cat));
+            return all;
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     }
 
@@ -61,14 +57,29 @@ class ProductsManager {
             let all = await fs.promises.readFile(this.path, "utf-8");
             all = JSON.parse(all);
             let prod = all.find((each) => each.id === id);
-            if (!prod) {
-                throw new Error("Producto no encontrado");
+            return prod;
+        } catch (error) {
+            throw error;
+        }
+    }
+    async update(id, data) {
+        try {
+            let all = await this.read();
+            let one = all.find((each) => each.id === id);
+            if (one) {
+                for (let prop in data) {
+                    one[prop] = data[prop];
+                }
+                all = JSON.stringify(all, null, 2);
+                await fs.promises.writeFile(this.path, all);
+                return one;
             } else {
-                console.log(prod);
-                return prod;
+                const error = new Error("Not found!");
+                error.statusCode = 404;
+                throw error;
             }
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     }
 
@@ -77,14 +88,16 @@ class ProductsManager {
             let all = await fs.promises.readFile(this.path, "utf-8");
             all = JSON.parse(all);
             let prod = all.find((each) => each.id === id);
-            if (!prod) {
-                throw new Error("Producto no encontrado");
-            } else {
+            if (prod) {
                 let filtered = all.filter((each) => each.id !== id);
                 filtered = JSON.stringify(filtered, null, 2);
                 await fs.promises.writeFile(this.path, filtered);
-                console.log({ deleted: prod.id });
                 return prod;
+            } else {
+                const error = new Error("not found!");
+                error.statusCode = 404;
+                throw error;
+
             }
         } catch (error) {
             console.log(error);
@@ -92,65 +105,5 @@ class ProductsManager {
     }
 }
 
-async function test() {
-    try {
-        const productos = new ProductsManager();
-        await productos.create({
-            title: "Zapatilla",
-            photo: "zapatilla.png",
-            category: "calzado",
-            price: 35000,
-            stock: 100
-        })
-        await productos.create({
-            title: "Poleron",
-            photo: "poleron.png",
-            category: "ropa",
-            price: 15000,
-            stock: 80
-        })
-        await productos.create({
-            title: "Lentes",
-            photo: "lentes.png",
-            category: "accesorios",
-            price: 5000,
-            stock: 20
-        })
-        await productos.create({
-            title: "Botin",
-            photo: "botin.png",
-            category: "calzado",
-            price: 40000,
-            stock: 50
-        })
-        await productos.create({
-            title: "Camisa",
-            photo: "camisa.png",
-            category: "ropa",
-            price: 8000,
-            stock: 30
-        })
-
-        console.log("***** Read *****");
-        const allProducts = await productos.read();
-        console.log("***** ReadOne *****");
-        await productos.readOne(allProducts[0].id);
-        await productos.readOne(allProducts[1].id);
-
-        console.log("***** Create adicional*****");
-        const adicional = await productos.create({
-            title: "Mochila para computador",
-            photo: "mochila.png",
-            category: "tecnologia",
-            price: 500000,
-            stock: 10
-        });
-        console.log("***** ReadOne adicional*****");
-        await productos.readOne(adicional.id);
-        console.log("***** Destroy adicional*****");
-        await productos.destroy(adicional.id);
-    } catch (error) {
-        console.log(error);
-    }
-}
-test();
+const productsManager = new ProductsManager();
+export default productsManager;

@@ -1,37 +1,37 @@
 [
   {
-    "id": "49c5cf65f5669c61eb008849",
+    "id": "59837241c1948b65e814fc8f",
     "foto": "foto.png",
     "email": "email1@gmail.com",
     "password": "pass1",
-    "role": 0
+    "role": "1"
   },
   {
-    "id": "3e3ff2af4991a642286931a7",
+    "id": "a0b7244852106378ad72f7c0",
     "foto": "foto2.png",
     "email": "email2@gmail.com",
     "password": "12pass",
-    "role": 0
+    "role": "0"
   },
   {
-    "id": "4380bb075561bbe97f4e50f8",
+    "id": "09fe3d1fe77d3f8b07149a41",
     "foto": "foto3.png",
     "email": "email3@gmail.com",
     "password": "123pass",
-    "role": 0
+    "role": "1"
   },
   {
-    "id": "640a175efe7cbc01b638e4fb",
+    "id": "55041b3db6edb1746955c289",
     "foto": "foto4.png",
     "email": "email3@gmail.com",
     "password": "1234pass",
-    "role": 0
+    "role": "0"
   },
   {
-    "id": "63bd4ee840d5e5b8dd6cc5c0",
+    "id": "b0dc1d1391559c95655584d7",
     "foto": "foto5.png",
     "email": "email5@gmail.com",
     "password": "12345pass",
-    "role": 0
+    "role": "1"
   }
 ]
