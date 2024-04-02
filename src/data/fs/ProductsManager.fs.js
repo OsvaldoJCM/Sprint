@@ -2,7 +2,7 @@ import fs from "fs";
 import crypto from "crypto";
 class ProductsManager {
     constructor() {
-        this.path = "./data/fs/files/products.json";
+        this.path = "./src/data/fs/files/products.json";
         this.init();
     }
     init() {
@@ -10,15 +10,13 @@ class ProductsManager {
         if (!exists) {
             const stringData = JSON.stringify([], null, 4);
             fs.writeFileSync(this.path, stringData);
-            console.log("Archivo creado");
-        } else {
-            console.log("El archivo ya existe");
+
         }
     }
     async create(data) {
         try {
             if (!data.title) {
-                throw new Error("Ingrese los datos del producto");
+                throw new Error("Enter product details! ");
             } else {
                 const product = {
                     id: crypto.randomBytes(12).toString("hex"),
@@ -37,7 +35,7 @@ class ProductsManager {
                 return product;
             }
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     }
     async read(cat) {
@@ -78,9 +76,7 @@ class ProductsManager {
                 throw error;
             }
         } catch (error) {
-            //el throw de la linea 72 hace saltar este catch
             throw error;
-            //el throw de la linea 76 hace saltar el catch de la ruta
         }
     }
 
@@ -100,7 +96,7 @@ class ProductsManager {
                 throw error;
             }
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     }
 }

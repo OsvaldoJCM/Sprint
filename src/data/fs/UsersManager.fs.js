@@ -2,7 +2,7 @@ import fs from "fs";
 import crypto from "crypto";
 class UsersManager {
     constructor() {
-        this.path = "./data/fs/files/users.json";
+        this.path = "./src/data/fs/files/users.json";
         this.init();
     }
     init() {
@@ -10,15 +10,12 @@ class UsersManager {
         if (!exists) {
             const stringData = JSON.stringify([], null, 4);
             fs.writeFileSync(this.path, stringData);
-            console.log("Archivo creado");
-        } else {
-            console.log("El archivo ya existe");
         }
     }
     async create(data) {
         try {
             if (!data.email) {
-                throw new Error("Ingrese los datos del usuario");
+                throw new Error("Enter user details");
             } else {
                 const user = {
                     id: crypto.randomBytes(12).toString("hex"),
@@ -36,7 +33,7 @@ class UsersManager {
                 return user;
             }
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     }
     async read(role) {
@@ -62,14 +59,33 @@ class UsersManager {
             throw error;
         }
     }
-
+    async update(id, data) {
+        try {
+            let all = await this.read();
+            let one = all.find((each) => each.id === id);
+            if (one) {
+                for (let prop in data) {
+                    one[prop] = data[prop];
+                }
+                all = JSON.stringify(all, null, 2);
+                await fs.promises.writeFile(this.path, all);
+                return one;
+            } else {
+                const error = new Error("Not found!");
+                error.statusCode = 404;
+                throw error;
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
     async destroy(id) {
         try {
             let all = await fs.promises.readFile(this.path, "utf-8");
             all = JSON.parse(all);
             let user = all.find((each) => each.id === id);
             if (!user) {
-                throw new Error("Usuario no encontrado");
+                throw new Error("Not found!");
             } else {
                 let filtered = all.filter((each) => each.id !== id);
                 filtered = JSON.stringify(filtered, null, 2);
@@ -78,7 +94,7 @@ class UsersManager {
                 return user;
             }
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     }
 }

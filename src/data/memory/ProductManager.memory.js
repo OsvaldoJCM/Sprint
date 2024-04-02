@@ -13,10 +13,10 @@ class ProductManager {
                 stock: data.stock
             }
             if (!data.title) {
-                throw new Error("Ingrese los datos del producto");
+                throw new Error("Enter product details");
             } else {
                 ProductManager.#products.push(product);
-                console.log("Producto creado");
+                console.log("Product created");
             }
         } catch (error) {
             console.log(error);
@@ -25,7 +25,7 @@ class ProductManager {
     read() {
         try {
             if (ProductManager.#products.length === 0) {
-                throw new Error("No hay productos");
+                throw new Error("Not found!");
             } else {
 
                 return ProductManager.#products
@@ -39,7 +39,7 @@ class ProductManager {
         try {
             const one = ProductManager.#products.find((each) => each.id === id);
             if (!one) {
-                throw new Error("No existe el producto");
+                throw new Error("Not found!");
             } else {
                 return one;
             }
@@ -52,7 +52,7 @@ class ProductManager {
             this.readOne(id);
             const within = ProductManager.#products.filter((each) => each.id !== id);
             ProductManager.#products = within;
-            console.log("producto eliminado");
+            console.log("Removed product");
         } catch (error) {
             console.log(error);
         }

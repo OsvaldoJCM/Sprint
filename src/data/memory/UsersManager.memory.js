@@ -10,10 +10,10 @@ class UsersManager {
                 role: 0
             };
             if (!data.email) {
-                throw new Error("Ingrese los datos del usuario");
+                throw new Error("Enter user details");
             } else {
                 UsersManager.#users.push(user);
-                console.log("usuario creado");
+                console.log("created user");
             }
         } catch (error) {
             console.log(error);
@@ -23,7 +23,7 @@ class UsersManager {
     read() {
         try {
             if (UsersManager.#users.length === 0) {
-                throw new Error("No hay usuarios");
+                throw new Error("Not found!");
             } else {
                 return UsersManager.#users
             }
@@ -36,7 +36,7 @@ class UsersManager {
         try {
             const one = UsersManager.#users.find((each) => each.id === id);
             if (!one) {
-                throw new Error("No existe el usuario");
+                throw new Error("Not found!");
             } else {
                 return one;
             }
@@ -50,7 +50,7 @@ class UsersManager {
             this.readOne(id);
             const within = UsersManager.#users.filter((each) => each.id !== id);
             UsersManager.#users = within;
-            console.log("Usuario eliminado");
+            console.log("Removed user!");
         } catch (error) {
             console.log(error);
         }
