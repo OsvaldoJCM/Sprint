@@ -1,14 +1,23 @@
 import express from "express";
+import morgan from "morgan";
 
-import productsManager from "./data/fs/ProductsManager.fs.js";
-import usersManager from "./data/fs/UsersManager.fs.js";
-
+import indexRouter from "./src/router/index.router.js";
+import errorHandler from "./src/middlewares/errorHandler.mid.js";
+import pathHandler from "./src/middlewares/pathHandler.mid.js";
 const server = express()
 const port = 8080
 const ready = () => console.log("server ready on port " + port);
 server.listen(port, ready)
 
 server.use(express.urlencoded({ extended: true }))
+
+server.use(express.json());
+server.use(morgan("dev"))
+
+// Endpoints
+server.use("/", indexRouter);
+server.use(errorHandler)
+server.use(pathHandler)
 
 server.get("/", async (requerimientos, respuesta) => {
     try {
@@ -24,101 +33,4 @@ server.get("/", async (requerimientos, respuesta) => {
         })
     }
 })
-
-// productsManager
-server.get("/api/products", async (req, res) => {
-    try {
-        const { category } = req.query
-        const all = await productsManager.read(category)
-        if (all.length !== 0) {
-            return res.status(200).json({
-                response: all,
-                category,
-                success: true
-            })
-        } else {
-            const error = new Error("NOT FOUND")
-            error.statusCode = 404
-            throw error
-        }
-    } catch (error) {
-        console.log(error);
-        return res.status(error.statusCode).json({
-            response: error.message,
-            success: false
-        })
-    }
-})
-
-server.get("/api/products/:pid", async (req, res) => {
-    try {
-        const { pid } = req.params
-        const one = await productsManager.readOne(pid)
-        if (one) {
-            return res.status(200).json({
-                response: one,
-                success: true
-            })
-        } else {
-            const error = new Error("NOT FOUND")
-            error.statusCode = 404
-            throw error
-        }
-    } catch (error) {
-        console.log(error);
-        return res.status(error.statusCode).json({
-            response: error.message,
-            success: false
-        })
-    }
-})
-
-// usersManager
-server.get("/api/users", async (req, res) => {
-    try {
-        const { role } = req.query
-        const all = await usersManager.read(role)
-        if (all.length !== 0) {
-            return res.status(200).json({
-                response: all,
-                role,
-                success: true
-            })
-        } else {
-            const error = new Error("NOT FOUND " + role)
-            error.statusCode = 404
-            throw error
-        }
-    } catch (error) {
-        console.log(error);
-        return res.status(error.statusCode).json({
-            response: error.message,
-            success: false
-        })
-    }
-})
-
-server.get("/api/users/:uid", async (req, res) => {
-    try {
-        const { uid } = req.params
-        const one = await usersManager.readOne(uid)
-        if (one) {
-            return res.status(200).json({
-                response: one,
-                success: true
-            })
-        } else {
-            const error = new Error("NOT FOUND")
-            error.statusCode = 404
-            throw error
-        }
-    } catch (error) {
-        console.log(error);
-        return res.status(error.statusCode).json({
-            response: error.message,
-            success: false
-        })
-    }
-})
-
 
