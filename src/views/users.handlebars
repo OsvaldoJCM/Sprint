@@ -1,0 +1,23 @@
+<h1 class="justify-center">Users!</h1>
+
+<section class="flex">
+    <article id="products" class="flex flex-wrap justify-center ">
+        {{#each users}}
+        <div class="card w-96  bg-gray-800 shadow-xl my-2 mx-1">
+            <a href="/users/{{this.id}}" class="pt-3 ps-3">{{this.email}}</a>
+            <figure><img src="{{this.foto}}" alt="{{this.foto}}" /></figure>
+            <div class="card-body">
+                <h2 class="card-title">{{this.email}}</h2>
+                <h3 class="card-title"></h3>
+                <div class="card-actions justify-start">
+                    <a class="badge badge-outline p-3" href="/users?role={{this.role}}">Role : {{this.role}}</a>
+                </div>
+                <div class="card-actions justify-end">
+                    <a class="btn btn-active" href="/users/{{this.id}}">Details</a>
+                </div>
+            </div>
+        </div>
+
+        {{/each}}
+    </article>
+</section>

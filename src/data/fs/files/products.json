@@ -326,5 +326,33 @@
     "category": "appliances",
     "price": 43000,
     "stock": 17
+  },
+  {
+    "id": "12e213155837506dcb0dda26",
+    "title": "asda",
+    "category": "asdasd",
+    "price": "qweqwe",
+    "stock": "12"
+  },
+  {
+    "id": "d487fe82f6d43fcb3ead9b1b",
+    "title": "Camara fotografica",
+    "category": "electro",
+    "price": "50000",
+    "stock": "12"
+  },
+  {
+    "id": "7d6f9cd5b78b22178d195413",
+    "title": "gopro",
+    "category": "electro",
+    "price": "10000",
+    "stock": "4"
+  },
+  {
+    "id": "4c0b1910430d5aa4a926e993",
+    "title": "bazooka",
+    "category": "music",
+    "price": "1000",
+    "stock": "2"
   }
 ]

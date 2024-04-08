@@ -1,0 +1,23 @@
+<section class="flex">
+    <article id="products" class="flex flex-wrap justify-center ">
+        {{#each products}}
+
+        <div class="card w-96  bg-gray-800 shadow-xl my-2 mx-1">
+            <a href="/products/{{this.id}}" class="pt-3 ps-3">{{this.title}}</a>
+            <figure><img src="{{this.photo}}" alt="{{this.title}}" /></figure>
+            <div class="card-body">
+                <h2 class="card-title">{{this.title}}</h2>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                <h3 class="card-title">$ {{this.price}}</h3>
+                <div class="card-actions justify-start">
+                    <a class="badge badge-outline p-3" href="?category={{this.category}}">{{this.category}}</a>
+                </div>
+                <div class="card-actions justify-end">
+                    <a class="btn btn-active" href="/{{this.id}}">Details</a>
+                </div>
+            </div>
+        </div>
+
+        {{/each}}
+    </article>
+</section>
