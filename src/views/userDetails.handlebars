@@ -1,0 +1,22 @@
+<section class="p-3" style="display: flex; justify-content: center; width: 100vw;">
+    {{#if users.id}}
+    <div class="card card-side bg-gray-800 shadow-xl ">
+        <figure><img src="{{users.foto}}" alt="{{users.foto}}" /></figure>
+        <div class="card-body">
+            <h2 class="card-title">{{users.email}}</h2>
+            <h3 class="card-title"></h3>
+            <div class="card-actions justify-start">
+                <a class="badge badge-outline p-3" href="/users?role={{users.role}}">Role : {{users.role}}</a>
+            </div>
+
+            <div class="card-actions justify-end">
+                <button class="btn btn-active">SEND EMAIL</button>
+            </div>
+        </div>
+    </div>
+
+    {{else}}
+    <h1 class="bg-success-subtle p-2 text-center text-success w-100">NOT FOUND
+        USER</h1>
+    {{/if}}
+</section>

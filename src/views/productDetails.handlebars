@@ -1,0 +1,22 @@
+<section class="p-3" style="display: flex; justify-content: center; width: 100vw;">
+    {{#if products.id}}
+    <div class="card card-side bg-gray-800 shadow-xl ">
+        <figure><img src="{{products.photo}}" alt="{{products.title}}" /></figure>
+        <div class="card-body">
+            <h2 class="card-title">{{products.title}}</h2>
+            <p>Lorem ipsum dolor sit amet consectetur adipis.</p>
+            <h3 class="card-title">$ {{products.price}}</h3>
+            <div class="card-actions justify-start">
+                <a class="badge badge-outline  p-3"
+                    href="/products?category={{products.category}}">{{products.category}}</a>
+            </div>
+            <div class="card-actions justify-end">
+                <button class="btn btn-active">buy</button>
+            </div>
+        </div>
+    </div>
+    {{else}}
+    <h1 class="bg-success-subtle p-2 text-center text-success w-100">NOT FOUND
+        PRODUCT</h1>
+    {{/if}}
+</section>

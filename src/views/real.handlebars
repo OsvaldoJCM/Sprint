@@ -1,0 +1,50 @@
+<h1 style="text-align: center;">Products!</h1>
+<section class="flex">
+    <article id="register" class="flex flex-col justify-normal items-center   basis-1/2">
+        <form class="flex flex-col bg-gray-800 p-5 input-bordered">
+            <h1 style="text-align: center; margin:1px">Registro</h1>
+
+            <input type="text" id="title" placeholder="Type title" class="input input-bordered w-full max-w-xs my-1" />
+            <input type="text" id="price" placeholder="Type price" class="input input-bordered w-full max-w-xs my-1" />
+            <input type="text" id="stock" placeholder="Type stock" class="input input-bordered w-full max-w-xs my-1" />
+            <input type="text" id="category" placeholder="Type category"
+                class="input input-bordered w-full max-w-xs my-1" />
+            <button type="button" class="btn btn-active" id="registrar">ADD PRODUCT</button>
+        </form>
+    </article>
+    <article id="products" class="flex flex-wrap-reverse justify-normal basis-1/2"></article>
+</section>
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+<script>
+    const socket = io()
+    socket.on("products", data => {
+        let template = ``;
+        template = data.map(each => `
+        <div class="card w-5/12 bg-gray-800 shadow-xl my-2 mx-1">
+            <figure><img src="${each.photo}" alt="${each.title}" /></figure>
+            <div class="card-body">
+                <h2 class="card-title">${each.title}</h2>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                <h3 class="card-title">$ ${each.price}</h3>
+                <div class="card-actions justify-start">
+                    <a class="badge badge-outline p-3" href="/?category=${each.category}">${each.category}</a>
+                </div>
+                <div class="card-actions justify-end">
+                    <a class="btn btn-active" href="/products/${each.id}">Details</a>
+                </div>
+            </div>
+        </div>
+        `).join("")
+        document.querySelector("#products").innerHTML = template;
+
+    })
+    document.querySelector("#registrar").addEventListener("click", (event) => {
+        const title = document.querySelector("#title").value;
+        const price = document.querySelector("#price").value;
+        const stock = document.querySelector("#stock").value;
+        const category = document.querySelector("#category").value;
+        console.log(title, price, stock, category)
+        socket.emit("newProduct", { title, price, stock, category });
+        document.querySelector("form").reset()
+    })
+</script>

@@ -45,6 +45,23 @@ class UsersManager {
         }
     }
 
+    update(id, data) {
+        try {
+            let one = UsersManager.#users.find((each) => each.id === id);
+            if (one) {
+                for (let prop in data) {
+                    one[prop] = data[prop];
+                }
+                return one;
+            } else {
+                const error = new Error("Not found!");
+                error.statusCode = 404;
+                throw error;
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
     destroy(id) {
         try {
             this.readOne(id);
@@ -97,3 +114,6 @@ usuarios.destroy(2)
 usuarios.destroy(5)
 console.log("***** Read *****");
 console.log(usuarios.read());
+console.log(usuarios.update(4, {
+    email: "email5@yahoo.org"
+}));
