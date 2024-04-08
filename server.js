@@ -37,18 +37,4 @@ server.use("/", indexRouter);
 server.use(errorHandler)
 server.use(pathHandler)
 
-// server.get("/", async (requerimientos, respuesta) => {
-//     try {
-//         return respuesta.status(200).json({
-//             response: "CODER API",
-//             success: true
-//         })
-//     } catch (error) {
-//         console.log(error);
-//         return respuesta.status(500).json({
-//             response: "CODER API ERROR",
-//             success: false
-//         })
-//     }
-// })
 
