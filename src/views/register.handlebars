@@ -13,9 +13,10 @@
     </article>
     <article id="users" class="flex flex-wrap-reverse justify-normal basis-1/2">
         {{#each users}}
+
         <div class="card w-5/12 bg-gray-800 shadow-xl my-2 mx-1">
-            <a href="/users/{{this.id}}" class="pt-3 ps-3">{{this.email}}</a>
-            <figure><img src="{{this.foto}}" alt="{{this.foto}}" /></figure>
+            <a href="/users/{{users.id}}" class="pt-3 ps-3">{{this.email}}</a>
+            <figure><img src="{{this.photo}}" alt="{{this.photo}}" /></figure>
             <div class="card-body">
                 <h2 class="card-title">{{this.email}}</h2>
                 <h3 class="card-title"></h3>
@@ -24,7 +25,7 @@
                         {{this.role}}</a>
                 </div>
                 <div class="card-actions justify-end">
-                    <a class="btn btn-active" href="/users/{{this.id}}">Details</a>
+                    <a class="btn btn-active" href="/users/{{this._id}}">Details</a>
                 </div>
             </div>
         </div>

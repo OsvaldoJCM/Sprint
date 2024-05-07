@@ -1,5 +1,7 @@
 import { Router } from "express";
-import usersManager from "../../data/fs/UsersManager.fs.js";
+// import usersManager from "../../data/fs/UsersManager.fs.js";
+import usersManager from "../../data/mongo/managers/UsersManager.mongo.js";
+import isEmail from "../../middlewares/isEmail.mid.js";
 
 const usersRouter = Router();
 
@@ -58,7 +60,7 @@ const createUser = async (req, res, next) => {
         return next(error);
     }
 }
-usersRouter.post("/", createUser);
+usersRouter.post("/", isEmail, createUser);
 
 const updateUser = async (req, res, next) => {
     try {

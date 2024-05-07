@@ -354,5 +354,28 @@
     "category": "music",
     "price": "1000",
     "stock": "2"
+  },
+  {
+    "id": "4278b44466dcfb1db53583dc",
+    "title": "Microwave Oveeeen",
+    "photo": "microwave_ovennn.png",
+    "category": "Appliances",
+    "price": 43000,
+    "stock": 17
+  },
+  {
+    "id": "2e376adff85a4b5375f608a5",
+    "title": "asd",
+    "category": "Appliances",
+    "price": 43000,
+    "stock": 7
+  },
+  {
+    "id": "c40373c6cf7ae3d5cf9ac873",
+    "title": "qwe",
+    "photo": "/assets/pc.png",
+    "category": "Appliances",
+    "price": 43000,
+    "stock": 7
   }
 ]

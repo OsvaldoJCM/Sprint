@@ -1,5 +1,7 @@
 import { Router } from "express";
-import usersManager from "../../data/fs/UsersManager.fs.js";
+import usersManager from "../../data/mongo/managers/UsersManager.mongo.js";
+// import usersManager from "../../data/fs/UsersManager.fs.js";
+
 const usersRouter = Router();
 
 usersRouter.get("/", async (req, res, next) => {
@@ -25,8 +27,8 @@ usersRouter.get("/register", async (req, res, next) => {
 usersRouter.get("/:id", async (req, res, next) => {
     try {
         const { id } = req.params;
-        const one = await usersManager.readOne(id);
-        return res.render("userDetails", { users: one });
+        const users = await usersManager.readOne(_id);
+        return res.render("userDetails", { users });
     } catch (error) {
         return next(error);
     }

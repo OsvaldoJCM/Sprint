@@ -1,7 +1,8 @@
 import { Router } from "express";
 import productsRouter from "./products.views.js";
 import usersRouter from "./users.views.js";
-import productsManager from "../../data/fs/ProductsManager.fs.js";
+import productsManager from "../../data/mongo/managers/ProductsManager.mongo.js";
+// import productsManager from "../../data/fs/ProductsManager.fs.js";
 const viewsRouter = Router();
 
 viewsRouter.use("/products", productsRouter);
@@ -11,7 +12,7 @@ viewsRouter.get("/", async (req, res, nets) => {
 
         const { category } = req.query
         const products = await productsManager.read(category);
-        return res.render("index", { products })
+        return res.render("index", { products });
     } catch (error) {
         return next(error)
     }

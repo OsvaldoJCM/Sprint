@@ -23,8 +23,8 @@ class ProductsManager {
                     title: data.title,
                     photo: data.photo,
                     category: data.category,
-                    price: data.price,
-                    stock: data.stock
+                    price: +data.price,
+                    stock: +data.stock
                 }
                 let all = await fs.promises.readFile(this.path, "utf-8");
                 all = JSON.parse(all);
