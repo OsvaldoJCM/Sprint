@@ -11,7 +11,7 @@
                     href="/products?category={{products.category}}">{{products.category}}</a>
             </div>
             <div class="card-actions justify-end">
-                <button class="btn btn-active">Agregar al carrito</button>
+                <button id="addToCartBtn" class="btn btn-active">Agregar al carrito</button>
             </div>
         </div>
     </div>
@@ -21,3 +21,41 @@
 
     {{/if}}
 </section>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const addToCartBtn = document.getElementById("addToCartBtn");
+        //const addToCartMessage = document.getElementById("addToCartMessage");
+
+        if (addToCartBtn) {
+            addToCartBtn.addEventListener("click", async () => {
+                const user_id = "6639999669964af60c00bc38";
+                const product_id = "{{products.id}}";
+                const quantity = 3;
+
+                const response = await fetch("/api/carts", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        user_id,
+                        product_id,
+                        quantity
+                    })
+                });
+
+                if (response.ok) {
+                    // El producto se agregó al carrito exitosamente
+                    //addToCartMessage.style.display = "block";
+                    console.log("exito")
+                } else {
+                    // Hubo un error al agregar el producto al carrito
+                    //addToCartMessage.style.display = "none";
+
+                    console.log("fallido")
+                }
+            });
+        }
+    });
+</script>

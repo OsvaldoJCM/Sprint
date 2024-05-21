@@ -2,17 +2,83 @@
     <article id="products" class="flex flex-col flex-nowrap   ">
         {{#each products}}
 
-        <div class="card w-96  bg-gray-800 shadow-xl my-2 mx-1">
+        <div class="card w-96  bg-gray-800 shadow-xl my-2 mx-1 ">
+
             <div class="card-body">
-                <h1 class="card-title">{{this.title}}</h1>
-                <p>Cantidad : {{this.quantity}}</p>
-                <h3 class="card-title">$ {{this.subTotal}}</h3>
-                <div class="card-actions justify-end">
-                    <a class="btn btn-active">Delete</a>
+                <div class="card-actions justify-between ">
+                    <div class=" justify-start">
+                        <h1 class="card-title text-left">{{this.title}}</h1>
+                    </div>
+                    <div class=" justify-end">
+                        <button id="delete" name="delete" class="btn btn-square bg-error btn-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+
                 </div>
+                <div class="flex items-center space-x-4    ">
+                    <button id="decrement" class="btn btn-outline btn-sm btn-error">-</button>
+                    <span id="counter" class="text-ml">{{this.quantity}}</span>
+                    <button id="increment" class="btn btn-outline btn-sm btn-success">+</button>
+                </div>
+                <h3 class="card-title">$ {{this.subTotal}}</h3>
+
             </div>
         </div>
 
         {{/each}}
     </article>
 </section>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const destroy = document.getElementById("delete");
+        const counterElement = document.getElementById('counter');
+        const decrementButton = document.getElementById('decrement');
+        const incrementButton = document.getElementById('increment');
+        //const addToCartMessage = document.getElementById("addToCartMessage");
+        if (destroy) {
+            destroy.addEventListener("click", async () => {
+
+                const response = await fetch("/api/carts/:cid={{this._id}}", {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                });
+
+                if (response.ok) {
+                    // El producto se agregó al carrito exitosamente
+                    //addToCartMessage.style.display = "block";
+                    console.log("exito")
+                } else {
+                    // Hubo un error al agregar el producto al carrito
+                    //addToCartMessage.style.display = "none";
+
+                    console.log("fallido")
+                }
+            });
+        }
+
+
+        let count = 0;
+
+        decrementButton.addEventListener('click', () => {
+            if (count > 0) {
+                count--;
+                counterElement.textContent = count;
+            }
+        });
+
+        incrementButton.addEventListener('click', () => {
+            count++;
+            counterElement.textContent = count;
+        });
+
+
+    });
+</script>

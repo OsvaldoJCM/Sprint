@@ -7,7 +7,7 @@ cartsRouter.get("/", read);
 cartsRouter.get("/:id", readOne);
 cartsRouter.post("/", create);
 cartsRouter.put("/:id", update);
-cartsRouter.delete("/:id", destroy);
+cartsRouter.delete("/:cid", destroy);
 
 cartsRouter.get("/paginate", paginate);
 
@@ -64,9 +64,9 @@ async function readOne(req, res, next) {
 
 async function update(req, res, next) {
     try {
-        const { nid } = req.params;
+        const { cid } = req.params;
         const data = req.body;
-        const one = await cartsManager.update(nid, data);
+        const one = await cartsManager.update(cid, data);
         return res.json({
             statusCode: 200,
             response: one,
@@ -78,8 +78,8 @@ async function update(req, res, next) {
 
 async function destroy(req, res, next) {
     try {
-        const { nid } = req.params;
-        const one = await cartsManager.destroy(nid);
+        const { cid } = req.params;
+        const one = await cartsManager.destroy(cid);
         return res.json({
             statusCode: 200,
             response: one,

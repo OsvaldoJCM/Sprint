@@ -43,12 +43,10 @@ class Manager {
 
     async destroy(id) {
         try {
-
-            const one = await this.Model.findByIdAndDelete(id)
-            return one
+            const one = await this.Model.findByIdAndDelete(id);
+            return one;
         } catch (error) {
-            throw error
-
+            throw error;
         }
     }
 
