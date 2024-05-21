@@ -60,6 +60,15 @@ class Manager {
             throw error;
         }
     }
+
+    async aggregate(obj) {
+        try {
+            const response = await this.Model.aggregate(obj);
+            return response;
+        } catch (error) {
+            throw error;
+        }
+    }
 }
 
 export default Manager;

@@ -16,9 +16,7 @@ usersRouter.get("/", async (req, res, next) => {
 });
 usersRouter.get("/register", async (req, res, next) => {
     try {
-        const { role } = req.query;
-        const users = await usersManager.read(role);
-        return res.render("register", { users });
+        return res.render("register", { title: "Registro de usuario" });
     } catch (error) {
         return next(error);
     }
@@ -27,7 +25,7 @@ usersRouter.get("/register", async (req, res, next) => {
 usersRouter.get("/:id", async (req, res, next) => {
     try {
         const { id } = req.params;
-        const users = await usersManager.readOne(_id);
+        const users = await usersManager.readOne(id);
         return res.render("userDetails", { users });
     } catch (error) {
         return next(error);

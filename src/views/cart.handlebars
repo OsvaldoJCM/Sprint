@@ -1,0 +1,18 @@
+<section class="flex justify-center">
+    <article id="products" class="flex flex-col flex-nowrap   ">
+        {{#each products}}
+
+        <div class="card w-96  bg-gray-800 shadow-xl my-2 mx-1">
+            <div class="card-body">
+                <h1 class="card-title">{{this.title}}</h1>
+                <p>Cantidad : {{this.quantity}}</p>
+                <h3 class="card-title">$ {{this.subTotal}}</h3>
+                <div class="card-actions justify-end">
+                    <a class="btn btn-active">Delete</a>
+                </div>
+            </div>
+        </div>
+
+        {{/each}}
+    </article>
+</section>

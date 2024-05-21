@@ -1,5 +1,5 @@
 <section class="p-3" style="display: flex; justify-content: center; width: 100vw;">
-    {{#if products.id}}
+    {{#if products}}
     <div class="card card-side bg-gray-800 shadow-xl ">
         <figure><img src="{{products.photo}}" alt="{{products.title}}" /></figure>
         <div class="card-body">
@@ -11,7 +11,7 @@
                     href="/products?category={{products.category}}">{{products.category}}</a>
             </div>
             <div class="card-actions justify-end">
-                <button class="btn btn-active">buy</button>
+                <button class="btn btn-active">Agregar al carrito</button>
             </div>
         </div>
     </div>

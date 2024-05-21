@@ -22,15 +22,23 @@ const ready = async () => {
 };
 const nodeServer = createServer(server);
 
-
 //tcp server
 const socketServer = new Server(nodeServer);
-
 socketServer.on("connection", socketCb);
-
 nodeServer.listen(port, ready);
+
 // handlebars
-server.engine("handlebars", engine())
+//Configuramos el motor de plantillas de handlebars
+server.engine("handlebars", engine({
+    runtimeOptions: {
+        allowedProtoMethods: true,
+        allowProtoMethodsByDefault: true,
+        allowedProtoProperties: true,
+        allowProtoPropertiesByDefault: true
+    }
+}));
+
+
 server.set('view engine', 'handlebars')
 server.set('views', __dirname + '/src/views')
 

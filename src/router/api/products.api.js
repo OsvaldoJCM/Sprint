@@ -49,7 +49,15 @@ productsRouter.get("/:id", async (req, res, next) => {
     }
 })
 
-const createProduct = async (req, res, next) => {
+productsRouter.post("/", uploader.single("photo"), isPhoto, createProduct);
+
+productsRouter.put("/:id", updateProduct);
+
+productsRouter.delete("/:id", destroyProduct);
+
+productsRouter.get("/paginate", paginate);
+
+async function createProduct(req, res, next) {
     try {
         const data = req.body
         console.log(req.file);
@@ -63,9 +71,7 @@ const createProduct = async (req, res, next) => {
         return next(error);
     }
 }
-productsRouter.post("/", uploader.single("photo"), isPhoto, createProduct);
-
-const updateProduct = async (req, res, next) => {
+async function updateProduct(req, res, next) {
     try {
         const { id } = req.params
         const data = req.body
@@ -77,10 +83,8 @@ const updateProduct = async (req, res, next) => {
     } catch (error) {
         return next(error);
     }
-};
-productsRouter.put("/:id", updateProduct);
-
-const destroyProduct = async (req, res, next) => {
+}
+async function destroyProduct(req, res, next) {
     try {
         const { id } = req.params
         const one = await productsManager.destroy(id)
@@ -91,10 +95,8 @@ const destroyProduct = async (req, res, next) => {
     } catch (error) {
         return next(error);
     }
-};
-productsRouter.delete("/:id", destroyProduct);
-
-const paginate = async (req, res, next) => {
+}
+async function paginate(req, res, next) {
     try {
         const filter = {};
         const opts = { page: 1, limit: 9, lean: true, sort: { title: 1 } };
@@ -104,9 +106,9 @@ const paginate = async (req, res, next) => {
         if (req.query.page) {
             opts.page = req.query.page;
         }
-        if (req.query.title) {
-            filter.title = new RegExp(req.query.title, "i")
-        }
+        // if (req.query.title) {
+        //     filter.title = new RegExp(req.query.title, "i")
+        // }
         const all = await productsManager.paginate({ filter, opts });
         return res.json({
             statusCode: 200,
@@ -121,10 +123,10 @@ const paginate = async (req, res, next) => {
             },
         });
     } catch (error) {
+        console.log("***********************");
         return next(error);
     }
 }
-productsRouter.get("/paginate", paginate);
 
 
 export default productsRouter;

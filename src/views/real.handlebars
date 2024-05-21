@@ -1,6 +1,6 @@
 <h1 style="text-align: center;">Products!</h1>
-<section class="flex">
-    <article id="register" class="flex flex-col justify-normal items-center   basis-1/2">
+<section class="flex  flex-row flex-wrap justify-center items-start mt-2">
+    <article id="register" class="flex flex-col justify-center    ">
         <form class="flex flex-col bg-gray-800 p-5 input-bordered">
             <h1 style="text-align: center; margin:1px">Registro</h1>
 
@@ -12,7 +12,7 @@
             <button type="button" class="btn btn-active" id="registrar">ADD PRODUCT</button>
         </form>
     </article>
-    <article id="products" class="flex flex-wrap-reverse justify-normal basis-1/2"></article>
+    <article id="products" class="flex flex-col justify-center "></article>
 </section>
 <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
 <script>
@@ -20,7 +20,7 @@
     socket.on("products", data => {
         let template = ``;
         template = data.map(each => `
-        <div class="card w-5/12 bg-gray-800 shadow-xl my-2 mx-1">
+        <div class="card bg-gray-800 shadow-xl mb-2 mx-4 p-5">
             <figure><img src="${each.photo}" alt="${each.title}" /></figure>
             <div class="card-body">
                 <h2 class="card-title">${each.title}</h2>
