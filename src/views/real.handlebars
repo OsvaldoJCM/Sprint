@@ -1,7 +1,7 @@
 <h1 style="text-align: center;">Products!</h1>
 <section class="flex  flex-row flex-wrap justify-center items-start mt-2">
     <article id="register" class="flex flex-col justify-center    ">
-        <form class="flex flex-col bg-gray-800 p-5 input-bordered">
+        <form class="flex flex-col bg-gray-800 p-5 input-bordered" id="productForm">
             <h1 style="text-align: center; margin:1px">Registro</h1>
 
             <input type="text" id="title" placeholder="Type title" class="input input-bordered w-full max-w-xs my-1" />
@@ -21,7 +21,7 @@
         let template = ``;
         template = data.map(each => `
         <div class="card bg-gray-800 shadow-xl mb-2 mx-4 p-5">
-            <figure><img src="${each.photo}" alt="${each.title}" /></figure>
+            <!-- <figure><img src="${each.photo}" alt="${each.title}" /></figure> -->
             <div class="card-body">
                 <h2 class="card-title">${each.title}</h2>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
@@ -38,13 +38,81 @@
         document.querySelector("#products").innerHTML = template;
 
     })
-    document.querySelector("#registrar").addEventListener("click", (event) => {
-        const title = document.querySelector("#title").value;
-        const price = document.querySelector("#price").value;
-        const stock = document.querySelector("#stock").value;
-        const category = document.querySelector("#category").value;
-        console.log(title, price, stock, category)
-        socket.emit("newProduct", { title, price, stock, category });
-        document.querySelector("form").reset()
+    document.querySelector("#registrar").addEventListener("click", async (event) => {
+        try {
+            const title = document.querySelector("#title").value;
+            const price = document.querySelector("#price").value;
+            const stock = document.querySelector("#stock").value;
+            const category = document.querySelector("#category").value;
+            let response = await fetch("/api/sessions/online");
+            response = await response.json();
+            const user_id = response.user_id;
+            if (user_id) {
+                const data = {
+                    title,
+                    price,
+                    stock,
+                    category
+                };
+                const opts = {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data),
+                };
+                let response = await fetch("/api/products", opts);
+                response = await response.json();
+
+                if (response.statusCode === 201) {
+                    return Swal.fire({
+                        title: response.message,
+                        icon: "success",
+                        timer: 5000,
+                        timerProgressBar: true,
+                        iconColor: "rgb(31, 41, 55)",
+                        color: "rgb(31, 41, 55)",
+                        confirmButtonColor: "rgb(31, 41, 55)",
+                    }).then(() => {
+                        socket.emit("newProduct", { response });
+                    })
+                } else {
+                    return Swal.fire({
+                        title: response.message,
+                        icon: "error",
+                        timer: 5000,
+                        timerProgressBar: true,
+                        iconColor: "rgb(31, 41, 55)",
+                        color: "rgb(31, 41, 55)",
+                        confirmButtonColor: "rgb(31, 41, 55)",
+                    }).then((result) => {
+                        if (result.isConfirmed || result.dismiss === Swal.DismissReason.timer) {
+                            document.getElementById('productForm').reset();
+                        }
+                    });
+                }
+            } else {
+                Swal.fire({
+                    title: "Please log in!",
+                    icon: "info",
+                    iconColor: "rgb(31, 41, 55)",
+                    color: "rgb(31, 41, 55)",
+                    confirmButtonColor: "rgb(31, 41, 55)",
+                    timer: 5000,
+                    timerProgressBar: true,
+                }).then((result) => {
+                    if (result.isConfirmed || result.dismiss === Swal.DismissReason.timer) {
+                        location.replace("/");
+                    }
+                });
+            }
+        } catch (error) {
+            Swal.fire({
+                title: error.message,
+                icon: "error",
+                timer: 5000,
+                timerProgressBar: true,
+                confirmButtonColor: "#ff3b3c",
+            });
+        }
+
     })
 </script>

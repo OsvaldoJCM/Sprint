@@ -13,14 +13,22 @@ class Manager {
 
     async read(cat) {
         try {
-            const all = await this.Model.find();
+            const all = await this.Model.find().sort({ _id: -1 });
             return all
         } catch (error) {
 
             throw error
         }
     }
+    async readByProduct(user_id, product_id) {
+        try {
+            const all = await this.Model.find({ user_id, product_id }).sort({ _id: -1 });
+            return all
+        } catch (error) {
 
+            throw error
+        }
+    }
     async readOne(id) {
         try {
             // const one = await this.Model.findById(id)
@@ -32,6 +40,27 @@ class Manager {
         }
     }
 
+    async readCartByUser(user_id) {
+        try {
+            // const one = await this.Model.findById(id)
+            const one = await this.Model.find({ user_id: user_id })
+            return one
+        } catch (error) {
+
+            throw error
+        }
+    }
+
+    async readByEmail(email) {
+        try {
+            // const one = await this.Model.findById(id)
+            const one = await this.Model.findOne({ email })
+            return one
+        } catch (error) {
+
+            throw error
+        }
+    }
     async update(id, data) {
         try {
             const one = await this.Model.findByIdAndUpdate(id, data, { new: true })

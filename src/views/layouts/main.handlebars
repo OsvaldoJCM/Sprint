@@ -7,6 +7,8 @@
     <title>Backend</title>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.9.0/dist/full.min.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 
 <body>
@@ -26,6 +28,7 @@
                         <li><a href="/">HOME</a></li>
                         <li><a href="/products/real">Products</a></li>
                         <li><a href="/users/register">Register</a></li>
+                        <li><a href="/login">Login</a></li>
                     </ul>
                 </div>
                 <a class="btn btn-ghost text-xl">Backend</a>
@@ -35,15 +38,48 @@
                     <li><a href="/">HOME</a></li>
                     <li><a href="/products/real">Products</a></li>
                     <li><a href="/users/register">Register</a></li>
+                    <li><a href="/login">Login</a></li>
                 </ul>
             </div>
             <div class="navbar-end">
-                <a class="btn" href="/cart/6639999669964af60c00bc38">Carrito</a>
+
             </div>
         </div>
     </header>
     {{{body}}}
 
 </body>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", printSessionIcons)
+    async function printSessionIcons() {
+        let template = "";
+        let online = await fetch("/api/sessions/online");
+        online = await online.json();
+        if (online.statusCode === 200) {
+            template = `
+                <a class="btn" href="/cart/${online.user_id}">Carrito</a> 
+                <button class="btn btn-circle" id="signout">
+  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+</button>
+            `;
+            document.querySelector(".navbar-end").innerHTML = template;
+            document.querySelector("#signout").onclick = async () => {
+                const opts = {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                };
+                let response = await fetch("/api/sessions/signout", opts);
+                response = await response.json();
+                if (response.statusCode === 200) {
+                    location.replace("/login");
+                }
+            };
+
+        }
+    }
+
+</script>
 
 </html>
