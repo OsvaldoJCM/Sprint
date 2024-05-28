@@ -1,42 +1,13 @@
 <section class="flex justify-center">
-    <article id="products" class="flex flex-col flex-nowrap   ">
-        {{#each products}}
+    <article id="products" class="flex flex-col flex-nowrap">
 
-        <div class="card w-96  bg-gray-800 shadow-xl my-2 mx-1 ">
-
-            <div class="card-body">
-                <div class="card-actions justify-between ">
-                    <div class=" justify-start">
-                        <h1 class="card-title text-left">{{this.title}}</h1>
-                    </div>
-                    <div class=" justify-end">
-                        <button id="delete" name="delete" class="btn btn-square bg-error btn-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                        </button>
-                    </div>
-
-                </div>
-                <div class="flex items-center space-x-4    ">
-                    <button id="decrement" class="btn btn-outline btn-sm btn-error">-</button>
-                    <span id="counter" class="text-ml">{{this.quantity}}</span>
-                    <button id="increment" class="btn btn-outline btn-sm btn-success">+</button>
-                </div>
-                <h3 class="card-title">$ {{this.subTotal}}</h3>
-
-            </div>
-        </div>
-
-        {{/each}}
     </article>
 </section>
 
+
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const destroy = document.getElementById("delete");
+    document.addEventListener("DOMContentLoaded", async function () {
+        /*const destroy = document.getElementById("delete");
         const counterElement = document.getElementById('counter');
         const decrementButton = document.getElementById('decrement');
         const incrementButton = document.getElementById('increment');
@@ -79,6 +50,101 @@
             counterElement.textContent = count;
         });
 
-
+ */
+        try {
+            let response = await fetch("/api/sessions/online");
+            response = await response.json();
+            const user_id = response.user_id;
+            let products = await fetch("/api/carts/" + user_id);
+            products = await products.json();
+            products = products.response;
+            let cartTemplates = "";
+            const selector = document.getElementById("products");
+            if (products?.length > 0) {
+                for (const element of products) {
+                    let quantity = document.getElementById(`quantity-${element.product_id._id}`)
+                    let price = document.getElementById(`price-${element.product_id._id}`)
+                    if (quantity) {
+                        quantity.textContent = +quantity.textContent + +element.quantity;
+                        price.textContent = "$" + (+quantity.textContent * +element.product_id.price);
+                    } else {
+                        selector.insertAdjacentHTML('beforeend',
+                            //createCartCard(element._id, element.product_id, element.quantity);
+                            ` <div class="card w-96  bg-gray-800 shadow-xl my-2 mx-1 ">
+                        <div class="card-body">
+                            <div class="card-actions justify-between ">
+                                <div class=" justify-start">
+                                    <h1 class="card-title text-left">${element.product_id.title}</h1>
+                                </div>
+                                <div class=" justify-end">
+                                    <button id="delete" name="delete" class="btn btn-square bg-error btn-sm">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                                            stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-4    ">
+                                <button id="decrement" onclick="decrementButton('${element.product_id._id}',${element.product_id.price})" class="btn btn-outline btn-sm btn-error">-</button>
+                                <span class="text-ml"  id="quantity-${element.product_id._id}" >${element.quantity}</span>
+                                <button id="increment" onclick="incrementButton('${element.product_id._id}',${element.product_id.price})" class="btn btn-outline btn-sm btn-success">+</button>
+                            </div>
+                            <h3 class="card-title" id="price-${element.product_id._id}">$ ${element.product_id.price * element.quantity}</h3>
+                            <div id="update-${element.product_id._id}" >   </div>
+                        </div>
+                    </div>`)
+                    }
+                }
+                //selector.insertAdjacentHTML = cartTemplates;
+                /*document.querySelectorAll(".product-input").forEach((each) => {
+                    each.onchange = (event) => changeQuantityCart(event, products);
+                });
+                document
+                    .querySelectorAll(".remove-btn")
+                    .forEach((each) => (each.onclick = removeProduct));*/
+            } else {
+                selector.innerHTML = `
+      <article class="product-cart">
+        <strong class="product-title" style='width: 100%; text-align: center'>No hay productos en el carrito</strong>
+      </article>
+    `;
+            }
+        } catch (error) {
+            console.log(error.message);
+        }
     });
+
+    function decrementButton(id, price) {
+        let quantity = document.getElementById(`quantity-${id}`)
+        let priceText = document.getElementById(`price-${id}`);
+        let updateButton = document.getElementById(`update-${id}`);
+        if (quantity.textContent > 1) {
+            quantity.textContent--
+            priceText.textContent = "$ " + (quantity.textContent * price)
+        }
+        updateButton.innerHTML = `<div class="card-actions justify-end">
+                <button id="addToCartBtn" class="btn btn-active">Update</button>
+            </div>`;
+    };
+
+    function incrementButton(id, price) {
+        let count = 0;
+        let quantity = document.getElementById(`quantity-${id}`)
+        let priceText = document.getElementById(`price-${id}`);
+        let updateButton = document.getElementById(`update-${id}`);
+        quantity.textContent++
+        priceText.textContent = "$ " + (quantity.textContent * price)
+        updateButton.innerHTML = `
+        <div class="card-actions justify-end">
+                <button id="addToCartBtn"  class="btn btn-active" onclick="updateCart('${element._id}')">Update</button>
+        </div>`;
+    };
+
+    async function updateCart(id) {
+
+    }
+
+
 </script>

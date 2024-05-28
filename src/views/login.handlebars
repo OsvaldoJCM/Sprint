@@ -1,11 +1,56 @@
 <section class="flex justify-center">
     <article id="register" class="flex flex-col justify-center items-center my-2">
-        <form class="flex flex-col bg-gray-800 p-5 input-bordered">
+        <form class="flex flex-col bg-gray-800 p-5 input-bordered" id="loginForm">
             <h1 style="text-align: center; margin:1px">{{title}}</h1>
             <input type="text" id="email" placeholder="Type email" class="input input-bordered w-full max-w-xs my-1" />
             <input type="text" id="password" placeholder="Type password"
                 class="input input-bordered w-full max-w-xs my-1" />
-            <button type="button" class="btn btn-active" id="login">Login</button>
+            <button type="button" class="btn btn-active" name="login" id="login">Login</button>
         </form>
     </article>
 </section>
+<script>
+    document.querySelector("#login").addEventListener("click", async () => {
+        const data = {
+            email: document.querySelector("#email").value,
+            password: document.querySelector("#password").value,
+        };
+        const opts = {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+        };
+        let response = await fetch("/api/sessions/login", opts);
+        response = await response.json();
+
+        if (response.statusCode === 200) {
+            return Swal.fire({
+                title: response.message,
+                icon: "success",
+                timer: 5000,
+                timerProgressBar: true,
+                iconColor: "rgb(31, 41, 55)",
+                color: "rgb(31, 41, 55)",
+                confirmButtonColor: "rgb(31, 41, 55)",
+            }).then((result) => {
+                if (result.isConfirmed || result.dismiss === Swal.DismissReason.timer) {
+                    location.replace("/");
+                }
+            });
+        } else {
+            return Swal.fire({
+                title: response.message,
+                icon: "error",
+                timer: 5000,
+                timerProgressBar: true,
+                iconColor: "rgb(31, 41, 55)",
+                color: "rgb(31, 41, 55)",
+                confirmButtonColor: "rgb(31, 41, 55)",
+            }).then((result) => {
+                if (result.isConfirmed || result.dismiss === Swal.DismissReason.timer) {
+                    document.getElementById('loginForm').reset();
+                }
+            });
+        }
+    });
+</script>

@@ -5,6 +5,9 @@ import productsManager from "../../data/mongo/managers/ProductsManager.mongo.js"
 import isText from "../../middlewares/isText.mid.js";
 import isPhoto from "../../middlewares/isPhoto.mid.js";
 import uploader from "../../middlewares/multer.mid.js";
+import isValidAdmin from "../../middlewares/isValidAdmin.mid.js";
+import isValidDataProducts from "../../middlewares/isValidDataProducts.mid.js";
+
 const productsRouter = Router();
 
 // productsManager
@@ -49,7 +52,7 @@ productsRouter.get("/:id", async (req, res, next) => {
     }
 })
 
-productsRouter.post("/", uploader.single("photo"), isPhoto, createProduct);
+productsRouter.post("/", isValidAdmin, isValidDataProducts, uploader.single("photo"), isPhoto, createProduct);
 
 productsRouter.put("/:id", updateProduct);
 
@@ -60,12 +63,10 @@ productsRouter.get("/paginate", paginate);
 async function createProduct(req, res, next) {
     try {
         const data = req.body
-        console.log(req.file);
         const one = await productsManager.create(data)
-        console.log(one);
         return res.json({
             statusCode: 201,
-            message: "Created id " + one.id
+            message: "Created Product!"
         })
     } catch (error) {
         return next(error);

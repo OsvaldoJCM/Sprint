@@ -10,8 +10,13 @@
                 <a class="badge badge-outline  p-3"
                     href="/products?category={{products.category}}">{{products.category}}</a>
             </div>
+            <div class="flex items-center space-x-4    ">
+                <button id="decrement" class="btn btn-outline btn-sm btn-error">-</button>
+                <span class="text-ml" id="quantity">1</span>
+                <button id="increment" class="btn btn-outline btn-sm btn-success">+</button>
+            </div>
             <div class="card-actions justify-end">
-                <button id="addToCartBtn" class="btn btn-active">Agregar al carrito</button>
+                <button id="addToCartBtn" class="btn btn-active">Add to cart</button>
             </div>
         </div>
     </div>
@@ -23,37 +28,94 @@
 </section>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", async function () {
+        const quantityElement = document.getElementById('quantity');
+        const decrementButton = document.getElementById('decrement');
+        const incrementButton = document.getElementById('increment');
+        let count = 0;
+
+        decrementButton.addEventListener('click', () => {
+            if (count > 1) {
+                count--;
+                quantityElement.textContent = count;
+            }
+        });
+
+        incrementButton.addEventListener('click', () => {
+            count++;
+            quantityElement.textContent = count;
+        });
+
         const addToCartBtn = document.getElementById("addToCartBtn");
         //const addToCartMessage = document.getElementById("addToCartMessage");
-
         if (addToCartBtn) {
             addToCartBtn.addEventListener("click", async () => {
-                const user_id = "6639999669964af60c00bc38";
-                const product_id = "{{products.id}}";
-                const quantity = 3;
 
-                const response = await fetch("/api/carts", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
+                let isOnline = await fetch("/api/sessions/online");
+                isOnline = await isOnline.json();
+
+
+                const user_id = isOnline.user_id;
+                if (user_id) {
+                    //const user_id = "6639999669964af60c00bc38";
+                    const product_id = "{{products.id}}";
+                    const quantity = quantityElement.textContent;
+                    const data = {
                         user_id,
                         product_id,
                         quantity
-                    })
-                });
+                    };
+                    const opts = {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(data),
+                    };
+                    let response = await fetch("/api/carts", opts);
+                    response = await response.json()
 
-                if (response.ok) {
-                    // El producto se agregó al carrito exitosamente
-                    //addToCartMessage.style.display = "block";
-                    console.log("exito")
+                    if (response.statusCode === 201) {
+                        return Swal.fire({
+                            title: response.message,
+                            icon: "success",
+                            timer: 5000,
+                            timerProgressBar: true,
+                            iconColor: "rgb(31, 41, 55)",
+                            color: "rgb(31, 41, 55)",
+                            confirmButtonColor: "rgb(31, 41, 55)",
+                            showDenyButton: true,
+                            denyButtonColor: "rgb(31, 41, 55)",
+                            denyButtonText: `Go to Cart`
+                        }).then((result) => {
+                            /* Read more about isConfirmed, isDenied below */
+                            if (result.isDenied) {
+                                location.replace("/cart/" + user_id);
+                            }
+                        });
+                    } else {
+                        return Swal.fire({
+                            title: response.message,
+                            icon: "error",
+                            timer: 5000,
+                            timerProgressBar: true,
+                            iconColor: "rgb(31, 41, 55)",
+                            color: "rgb(31, 41, 55)",
+                            confirmButtonColor: "rgb(31, 41, 55)",
+                        })
+                    }
                 } else {
-                    // Hubo un error al agregar el producto al carrito
-                    //addToCartMessage.style.display = "none";
-
-                    console.log("fallido")
+                    Swal.fire({
+                        title: "Please log in!",
+                        icon: "info",
+                        iconColor: "rgb(31, 41, 55)",
+                        color: "rgb(31, 41, 55)",
+                        confirmButtonColor: "rgb(31, 41, 55)",
+                        timer: 5000,
+                        timerProgressBar: true,
+                    }).then((result) => {
+                        if (result.isConfirmed || result.dismiss === Swal.DismissReason.timer) {
+                            location.replace("/login");
+                        }
+                    });
                 }
             });
         }

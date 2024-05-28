@@ -3,8 +3,11 @@ import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import morgan from "morgan";
+import cookieParser from "cookie-parser";
+import session from "express-session";
+// import fileStore from "session-file-store"
+import MongoStore from "connect-mongo";
 import { engine } from "express-handlebars"
-
 import indexRouter from "./src/router/index.router.js";
 import socketCb from "./src/router/index.socket.js"
 import errorHandler from "./src/middlewares/errorHandler.mid.js";
@@ -43,6 +46,19 @@ server.set('view engine', 'handlebars')
 server.set('views', __dirname + '/src/views')
 
 // middleware
+server.use(cookieParser(process.env.SECRET))
+// const fileSession = fileStore(session)
+server.use(session({
+    // store: new fileSession({
+    //     path: "./src/data/fs/files/sessions",
+    //     ttl: 60 * 60
+    // }),
+    store: new MongoStore({ mongoUrl: process.env.MONGO_URI, ttl: 60 * 60 }),
+    secret: process.env.SECRET,
+    resave: true,
+    saveUninitialized: true,
+    // cookie: { maxAge: 60 * 60 * 1000 }
+}))
 server.use(express.urlencoded({ extended: true }))
 server.use(express.json());
 server.use(morgan("dev"))

@@ -4,20 +4,20 @@ import cartsManager from "../../data/mongo/managers/CartsManager.mongo.js";
 const cartsRouter = Router();
 
 cartsRouter.get("/", read);
-cartsRouter.get("/:id", readOne);
+cartsRouter.get("/:id", readCartByUser);
 cartsRouter.post("/", create);
 cartsRouter.put("/:id", update);
 cartsRouter.delete("/:cid", destroy);
-
 cartsRouter.get("/paginate", paginate);
 
 async function create(req, res, next) {
     try {
         const data = req.body;
+
         const one = await cartsManager.create(data);
         return res.json({
             statusCode: 201,
-            message: "CREATED ID: " + one.id,
+            message: "Product added to cart! ",
         });
     } catch (error) {
         return next(error);
@@ -51,6 +51,25 @@ async function readOne(req, res, next) {
             return res.json({
                 statusCode: 200,
                 response: one
+            });
+        } else {
+            const error = new Error("Not found!");
+            error.statusCode = 404;
+            throw error;
+        }
+    } catch (error) {
+        return next(error);
+    }
+}
+async function readCartByUser(req, res, next) {
+    try {
+        const { id } = req.params;
+        const all = await cartsManager.readCartByUser(id);
+        console.log(all)
+        if (all) {
+            return res.json({
+                statusCode: 200,
+                response: all
             });
         } else {
             const error = new Error("Not found!");

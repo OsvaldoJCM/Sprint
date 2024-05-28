@@ -1,4 +1,4 @@
-import usersManager from "../data/mongo/managers/UsersManager.mongo";
+import usersManager from "../data/mongo/managers/UsersManager.mongo.js";
 
 async function isValidEmail(req, res, next) {
     try {
@@ -14,5 +14,4 @@ async function isValidEmail(req, res, next) {
         return next(error);
     }
 }
-
 export default isValidEmail;

@@ -31,5 +31,4 @@ usersRouter.get("/:id", async (req, res, next) => {
         return next(error);
     }
 });
-
 export default usersRouter;
