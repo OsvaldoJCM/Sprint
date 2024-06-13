@@ -4,10 +4,11 @@ import isValidEmail from "../../middlewares/isValidEmail.mid.js";
 import isValidData from "../../middlewares/isValidData.mid.js";
 import isValidUser from "../../middlewares/isValidUser.mid.js";
 import isValidPassword from "../../middlewares/isValidPasword.mid.js";
+import createHashPassword from "../../middlewares/createHashPassword.mid.js";
 const sessionsRouter = Router();
 
 
-sessionsRouter.post("/register", isValidData, isValidEmail, async (req, res, next) => {
+sessionsRouter.post("/register", isValidData, isValidEmail, createHashPassword, async (req, res, next) => {
     try {
         const data = req.body;
         await usersManager.create(data);
@@ -22,15 +23,15 @@ sessionsRouter.post("/login", isValidUser, isValidPassword, async (req, res, nex
     try {
         const { email, password } = req.body;
         const one = await usersManager.readByEmail(email)
-        if (one.password === password) {
-            req.session.email = email
-            req.session.online = true
-            req.session.role = one.role
-            req.session.photo = one.photo
-            req.session.user_id = one._id
-            return res.json({ statusCode: 200, message: "Logged in" });
-        }
-        return res.json({ statusCode: 401, message: "Bad Auth" });
+        // if (one.password === password) {
+        req.session.email = email
+        req.session.online = true
+        req.session.role = one.role
+        req.session.photo = one.photo
+        req.session.user_id = one._id
+        return res.json({ statusCode: 200, message: "Logged in" });
+        // }
+        // return res.json({ statusCode: 401, message: "Bad Auth" });
     } catch (error) {
         return next(error)
     }
