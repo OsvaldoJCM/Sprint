@@ -55,30 +55,44 @@
     document.addEventListener("DOMContentLoaded", printSessionIcons)
     async function printSessionIcons() {
         let template = "";
+
         let online = await fetch("/api/sessions/online");
         online = await online.json();
+        console.log(online)
         if (online.statusCode === 200) {
             template = `
                 <a class="btn" href="/cart/${online.user_id}">Carrito</a> 
                 <button class="btn btn-circle" id="signout">
-  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
-</button>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
             `;
             document.querySelector(".navbar-end").innerHTML = template;
-            document.querySelector("#signout").onclick = async () => {
-                const opts = {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                };
-                let response = await fetch("/api/sessions/signout", opts);
-                response = await response.json();
-                if (response.statusCode === 200) {
-                    location.replace("/login");
-                }
-            };
 
         }
     }
+    document.getElementById("signout").addEventListener("onclick", async () => {
+        const opts = {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+        };
+        let response = await fetch("/api/sessions/signout", opts);
+        response = await response.json();
+        console.log(response)
+        if (response.statusCode === 200) {
+            location.replace("/login");
+        }
+    });
+    /*document.querySelector("#signout").onclick = async () => {
+        const opts = {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+        };
+        let response = await fetch("/api/sessions/signout", opts);
+        response = await response.json();
+        if (response.statusCode === 200) {
+            location.replace("/login");
+        }
+    };*/
 
 </script>
 
